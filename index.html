@@ -1,0 +1,83 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Clipping</title>
+</head>
+<body>
+    <h3>
+        裁剪生成图片base64的插件<br/>
+    </h3>
+    <ul>
+        <li>支持浏览器外部拖拽导入图片</li>
+        <li>支持双击导入图片</li>
+        <li>支持鼠标拖拽图片位置</li>
+        <li>支持滑轮改变图片大小</li>
+    </ul>
+    <small>只支持ie10+</small>
+    <hr/>
+    <canvas id="clipping"  height="200" width="200"></canvas>
+    <hr/>
+    <label>传入图片:<input id="incomingImage" type="file" accept="image/*"/></label>
+    <button id="bigger">放大</button>
+    <button id="smaller">缩小</button>
+    <button id="toUp">向上</button>
+    <button id="toDown">向下</button>
+    <button id="toLeft">向左</button>
+    <button id="toRight">向右</button>
+    <button id="toDataURL">生成图片base64</button>
+    <hr/>
+    <img id="target"/>
+    <hr/>
+    <span>base64值:</span>
+    <div style="word-wrap: break-word;" id="base64"></div>
+    <script src="./clipping/clipping.js"></script>
+    <script>
+        var clipping=Clipping({
+            ele:document.querySelector("#clipping"),
+            targetShape:"circle",
+            //targetWidth和targetHeight只有在targetShape为rect的时候生效
+            //targetWidth:150,
+            //targetHeight:150,
+            //targetR只有在targetShape为circle的时候生效
+            targetR:80,
+            shouldDropIn:true,
+            shouldDblclickIn:true,
+            shouldMouseDrag:true,
+            shouldMouseWheelScale:true,
+            shouldKeystrokeMovement:true,
+            maskColor:"rgba(0,255,0,.5)"
+        });
+        document.querySelector("#incomingImage").addEventListener("change",function(event){
+            var file =  this.files[0];
+            clipping.incomingImage(file);
+        });
+        document.querySelector("#bigger").addEventListener("click",function(){
+            clipping.scaling(3);
+        });
+        document.querySelector("#smaller").addEventListener("click",function(){
+            clipping.scaling(-3);
+        });
+        document.querySelector("#toUp").addEventListener("click",function(){
+            clipping.moving(0,-3);
+        });
+        document.querySelector("#toDown").addEventListener("click",function(){
+            clipping.moving(0,3);
+        });
+        document.querySelector("#toLeft").addEventListener("click",function(){
+            clipping.moving(-3,0);
+        });
+        document.querySelector("#toRight").addEventListener("click",function(){
+            clipping.moving(3,0);
+        });
+        document.querySelector("#toDataURL").addEventListener("click",function(){
+            if(clipping.isPaintingFinished()){
+                var url=clipping.toDataURL();
+                document.querySelector("#target").src = url;
+                document.querySelector("#base64").innerHTML = url;
+            }
+        });
+    </script>
+</body>
+</html>
