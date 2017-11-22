@@ -36,7 +36,7 @@ function Clipping(options){
     var target = options.ele;
     if(!target){
         throw new Error("the ele is required");
-    };
+    }
     //源图片是否可以通过拖拽来放入canvas
     var shouldDropIn = options.shouldDropIn;
     //源图片是否可以通过双击canvas来放入canvas
@@ -92,7 +92,11 @@ function Clipping(options){
                 var file=this.files[0];
                 incomingImage(file);
             });
+            //for IE
+            document.body.appendChild(input);
             input.click();
+            //for IE
+            document.body.removeChild(input);
         })
     }
     if(shouldDropIn){
@@ -118,7 +122,7 @@ function Clipping(options){
             currentX = event.clientX;
             currentY = event.clientY;
             mousedown=true;
-        })
+        });
         target.addEventListener("mousemove",function(event){
             if(mousedown){
                 var clientX = event.clientX;
@@ -128,7 +132,7 @@ function Clipping(options){
                 currentX = clientX;
                 currentY = clientY;
             }
-        })
+        });
         window.addEventListener("mouseup",function(){
             mousedown=false;
             currentX=0;
@@ -209,7 +213,7 @@ function Clipping(options){
         //type:图片格式，默认为 image/png ,可使用的值有:"image/png","image/jpeg","image/webp"等
         //encoderOptions 可选,在指定图片格式为 image/jpeg 或 image/webp的情况下，可以从 0 到 1 的区间内选择图片的质量。如果超出取值范围，将会使用默认值 0.92。其他参数会被忽略。
         toDataURL:toDataURL
-    }
+    };
     //是否绘制完毕
     function isPaintingFinished(){
         return paintingFinished;
