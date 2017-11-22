@@ -8,3 +8,5 @@
     <li>支持滑轮改变图片大小</li>
 </ul>
 <small>只支持ie10+</small>
+
+[simple](https://liyongleihf2006.github.io/clipping/)
